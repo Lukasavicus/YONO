@@ -1,41 +1,45 @@
+/** ***************************************************************************
+ * YONO - You Only Need Once                                                  *
+ * -------------------------------------------------------------------------- *
+ * lukasavicus at gmail dot com                                               *
+ * 08 aug 2023                                                                *
+ *************************************************************************** */
+
+// === IMPORTS ================================================================
 const express = require('express');
 const bodyParser = require('body-parser');
+const persist = require('node-persist'); // Import node-persist
 
-const multer = require('multer');
-const path = require('path');
+// === ROUTES =================================================================
+const projectRoutes = require('./routes/projects');
+const uploadRoutes = require('./routes/uploads');
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 
-const projectRoutes = require('./routes/projects'); // Import the project routes module
+// const path = require('path'); // TODO: check
 
 const app = express();
 const port = 3000;
+
+// === PERSISTENCE ============================================================
+// Initialize node-persist
+persist.initSync();
+// Load existing projects from storage
+const projects = persist.getItemSync('projects') || [];
 
 app.use(bodyParser.json());
 
 // Use the project routes
 app.use('/projects', projectRoutes);
-
-// Configure Multer for file uploads
-const storage = multer.diskStorage({
-  destination: 'uploads',
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage: storage });
+app.use('/upload', uploadRoutes);
+app.use('/users', userRoutes); // User-related routes
+app.use('/auth', authRoutes);   // Authentication-related routes
 
 // Serve static files from the "public" directory (e.g., CSS and client-side JS)
 app.use(express.static('public'));
 
-// Set up a route to handle file uploads
-app.post('/upload', upload.single('photo'), (req, res) => {
-    console.log('Somebody reached me')
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
-  res.send('File uploaded successfully.');
-});
 
-// Start the server
+// === START THE SERVER =======================================================
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

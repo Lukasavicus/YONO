@@ -1,10 +1,14 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+const persist = require('node-persist');
 
 const router = express.Router();
 
-const projects = [];
 
+// Initialize node-persist
+persist.initSync();
+
+// Create a new project
 router.post('/', (req, res) => {
   const { name, creationUser } = req.body;
   const project = {
@@ -14,10 +18,13 @@ router.post('/', (req, res) => {
     creationDate: new Date(),
     updateDate: null
   };
+
   projects.push(project);
+  persist.setItemSync('projects', projects); // Update storage
   res.status(201).json(project);
 });
 
+// Retrieve all projects
 router.get('/', (req, res) => {
   res.json(projects);
 });
