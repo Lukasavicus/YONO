@@ -1,82 +1,71 @@
-# 📌 Yono
+# 📌 YONO
 
-![Status](https://img.shields.io/badge/status-idea/prototype-blue?style=flat-square)
+![Phase](https://img.shields.io/badge/phase-idea-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/Arrow-Head-Tech/YONO?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/Arrow-Head-Tech/YONO?style=flat-square)
-![GitHub stars](https://img.shields.io/github/stars/Arrow-Head-Tech/YONO?style=social)
 
-> Yono - Software development project
+> **YONO** — *You Only Need Once* (or *You Only Need One*). Computer vision app to find duplicate and similar images, then plan actions (remove, group).
 
 ---
 
-## 📋 Project Status
-> **Current status:** `💡 Idea/Prototype`  
-> _Note:_ This is a project from the Arrow-Head-Tech organization.
+## 📋 Project Phase
+
+> **Current phase:** `💡 Idea`
+>
+> **Owner:** Arrow-Head-Tech
 
 ---
 
 ## 📝 Description
 
-Yono - Software development project
+**YONO** is a **computer vision** project: an image/photo analyzer that determines whether photos are **duplicates** or **similar**, and to what degree. You point it at a folder (or set of folders, or an entire disk), and it runs the analysis for you.
 
-This project is part of the Arrow-Head-Tech organization's portfolio of software development projects.
+### Core idea
+
+- **Input:** A target directory, multiple directories, or a whole disk (scale depends on file count).
+- **Output:** Which files are duplicates, which are similar (with a similarity level), and an **action planner** — e.g. “these files are identical / similar; difference is X; you can remove one, merge, etc.”
+- **Extra:** Grouping by image content (e.g. “beach photos”) and/or by **metadata** (e.g. “beach photos from February 2025” for a specific trip).
+
+### Algorithm challenges
+
+The core difficulty is recognizing “the same” or “very similar” images across real-world variation:
+
+| Challenge | Example | Goal |
+|-----------|---------|------|
+| **Different dimensions** | Same photo, one resized | Still treat as duplicate |
+| **Different color** | Same photo in B&W vs color | Still recognize as same |
+| **Small displacement** | Burst/sequence with a few pixels shift | Treat as near-duplicates and surface for review |
+
+So: hashing or naive pixel diff is not enough; the pipeline needs to be robust to resize, color changes, and small shifts.
+
+### Form factor
+
+- **Desktop** application: run locally, point at folder(s) or disk, run analysis, then use the action planner to deduplicate or organize.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- To be determined
-
----
-
-## ✨ Features
-
-- Core functionality
+- To be determined (computer vision / image hashing / similarity; likely Python or similar for prototyping).
 
 ---
 
 ## 📦 Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/Arrow-Head-Tech/YONO.git
 cd YONO
-
-# Install dependencies (if applicable)
-# For Python projects:
-pip install -r requirements.txt
-
-# For Node.js projects:
-npm install
 ```
 
----
-
-## ▶️ How to Run
-
-```bash
-# Instructions will vary based on project type
-# Check the codebase for entry points
-```
+*(Dependencies TBD when implementation starts.)*
 
 ---
 
 ## 📈 Changelog
 
-| Version | Date       | Changes                                         |
-|---------|------------|-------------------------------------------------|
-| 0.1.0   | 2025-10-29 | Initial repository documentation                |
-
----
-
-## 🤝 How to Contribute
-
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature/my-feature`
-3. Make your changes and commit: `git commit -m 'Add new feature'`
-4. Push to your branch: `git push origin feature/my-feature`
-5. Open a Pull Request
+| Version | Date       | Changes                              |
+|---------|------------|--------------------------------------|
+| 0.1.0   | 2025-10-29 | Initial repository documentation     |
+| 0.2.0   | 2026-03-10 | Full vision: CV duplicate/similarity detector, action planner, grouping by content/metadata. Phase: idea. |
 
 ---
 
